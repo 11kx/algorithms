@@ -109,24 +109,75 @@ void mergeTwoLists(LinkedList &list1, LinkedList &list2)
     }
 }
 
+// 判断输入单链表是否有环
+bool hasCycle(Node *head,int& pos)
+{
+    //解法采用快慢指针。快慢指针能够相遇就是有环
+    //通过数学计算可得环的入口位置。
+    Node* fast = head;
+    Node* slow = head;
+
+    Node* x = head;
+    pos = 0;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow)
+        {
+            //说明有环了
+            while(x != slow)
+            {
+                x = x->next;
+                slow = slow ->next;
+                pos++;
+                if(x == slow)
+                {
+                   break;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+
+}
+
 int main()
 {
-    int arr[] = {1, 2, 4, 6, 7};
-    int brr[] = {1, 3, 4, 9};
-    LinkedList list1;
-    LinkedList list2;
-    for (auto i : arr)
-    {
-        list1.insertAtTail(i);
-    }
-    for (auto i : brr)
-    {
-        list2.insertAtTail(i);
-    }
+    Node head;
+    Node n1(25),n2(67),n3(32),n4(18);
+    head.next = &n1;
+    n1.next = &n2;
+    n2.next = &n3;
+    n3.next = &n4;
+    n4.next = &n2;
 
-    list1.printList();
-    list2.printList();
-    mergeTwoLists(list1, list2);
-
-    list1.printList();
+    int pos = 0;
+    if(hasCycle(&head,pos))
+    {
+        std::cout << "存在环，环的入口位置为" << pos << std::endl;
+    }
 }
+
+// int main()
+// {
+//     int arr[] = {1, 2, 4, 6, 7};
+//     int brr[] = {1, 3, 4, 9};
+//     LinkedList list1;
+//     LinkedList list2;
+//     for (auto i : arr)
+//     {
+//         list1.insertAtTail(i);
+//     }
+//     for (auto i : brr)
+//     {
+//         list2.insertAtTail(i);
+//     }
+
+//     list1.printList();
+//     list2.printList();
+//     mergeTwoLists(list1, list2);
+
+//     list1.printList();
+// }
