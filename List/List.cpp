@@ -81,13 +81,13 @@ void mergeTwoLists(LinkedList &list1, LinkedList &list2)
     Node *p = list1.head->next;
     Node *q = list2.head->next;
     // 指向合并后新链表的最后一个元素，
-    //起始位置应该位于List1的头结点位置，而不是list.head->next
-    //因为你也不能确定list.head->next的数字是否符合新链表的起始位置。
+    // 起始位置应该位于List1的头结点位置，而不是list.head->next
+    // 因为你也不能确定list.head->next的数字是否符合新链表的起始位置。
     Node *last = list1.head;
     list2.head->next = nullptr;
     while (p->next != nullptr && q->next != nullptr)
     {
-        if(p->data < q->data)
+        if (p->data < q->data)
         {
             last->next = p;
             p = p->next;
@@ -99,66 +99,141 @@ void mergeTwoLists(LinkedList &list1, LinkedList &list2)
         }
         last = last->next;
     }
-    if(p != nullptr)
+    if (p != nullptr)
     {
         last->next = p;
     }
-    if(q != nullptr)
+    if (q != nullptr)
     {
         last->next = q;
     }
 }
 
 // 判断输入单链表是否有环
-bool hasCycle(Node *head,int& pos)
+bool hasCycle(Node *head, int &pos)
 {
-    //解法采用快慢指针。快慢指针能够相遇就是有环
-    //通过数学计算可得环的入口位置。
-    Node* fast = head;
-    Node* slow = head;
+    // 解法采用快慢指针。快慢指针能够相遇就是有环
+    // 通过数学计算可得环的入口位置。
+    Node *fast = head;
+    Node *slow = head;
 
-    Node* x = head;
+    Node *x = head;
     pos = 0;
     while (fast != nullptr && fast->next != nullptr)
     {
         fast = fast->next->next;
         slow = slow->next;
-        if(fast == slow)
+        if (fast == slow)
         {
-            //说明有环了
-            while(x != slow)
+            // 说明有环了
+            while (x != slow)
             {
                 x = x->next;
-                slow = slow ->next;
+                slow = slow->next;
                 pos++;
-                if(x == slow)
+                if (x == slow)
                 {
-                   break;
+                    break;
                 }
             }
             return true;
         }
     }
     return false;
-
 }
-
+// 判断两个链表是否相交，返回相交的起始节点，如果没有则返回nullptr
+Node *getIntersectionNode(int& intersectVal, Node *listA, Node *listB)
+{
+    //获取两个链表的长度，长的链表先跑长的位置，等到走到同一个位置就是相交位置。
+    Node* l1 = listA->next;
+    Node* l2 = listB->next;
+    int temp1 = 0;
+    int temp2 = 0;
+    int n = 0;
+    while (l1 != nullptr)
+    {
+        l1 = l1->next;
+        temp1++;
+    }
+    while (l2 != nullptr)
+    {
+        l2 = l2->next;
+        temp2++;
+    }
+    l1 = listA;
+    l2 = listB;
+    if(temp1 > temp2)
+    {
+        n = temp1 - temp2;
+        
+        for (int i = 0;i < n;i++)
+        {
+            l1 = l1->next;
+        }
+    }
+    else
+    {
+        n = temp2 - temp1;
+        for (int i = 0;i < n;i++)
+        {
+            l2 = l2->next;
+        }
+    }
+    while (l1 != nullptr && l2 != nullptr)
+    {
+        l1 = l1->next;
+        l2 = l2->next;
+        if(l1 == l2)
+        {
+            intersectVal = l1->data;
+            return l1;
+        }
+    }
+    return nullptr;
+}
 int main()
 {
-    Node head;
+    Node head1;
     Node n1(25),n2(67),n3(32),n4(18);
-    head.next = &n1;
+    head1.next = &n1;
     n1.next = &n2;
     n2.next = &n3;
     n3.next = &n4;
-    n4.next = &n2;
+    n4.next = nullptr;
 
-    int pos = 0;
-    if(hasCycle(&head,pos))
+    Node head2;
+    Node m1(1),m2(3),m3(4),m4(9);
+    head2.next = &m1;
+    m1.next = &m2;
+    m2.next = &m3;
+    m3.next = &m4;
+    m4.next = &n3;
+
+    int value = 0;
+
+    auto node = getIntersectionNode(value,&head1,&head2);
+    if(node != nullptr)
     {
-        std::cout << "存在环，环的入口位置为" << pos << std::endl;
+        std::cout << "两链表相交，交点值为 " << value << std::endl;
     }
+    
 }
+// int main()
+// {
+//     Node head;
+//     Node n1(25),n2(67),n3(32),n4(18);
+//     head.next = &n1;
+//     n1.next = &n2;
+//     n2.next = &n3;
+//     n3.next = &n4;
+//     n4.next = &n2;
+
+//     int pos = 0;
+//     if(hasCycle(&head,pos))
+//     {
+//         std::cout << "存在环，环的入口位置为" << pos << std::endl;
+//     }
+// }
 
 // int main()
 // {
