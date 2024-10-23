@@ -4,8 +4,7 @@ struct Node
 {
     int data;
     Node *next;
-    Node() : data(0), next(nullptr) {}
-    Node(int x) : data(x), next(nullptr) {}
+    Node(int x = 0) : data(x), next(nullptr) {}
     Node(int x, Node *next) : data(x), next(next) {}
 };
 
