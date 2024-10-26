@@ -83,11 +83,14 @@ int main()
     {
         q.Push(i);
     }
-    for(int i = 0;i < 15;i++)
+    cout << "back " << q.back() << endl;
+
+    std::cout << "size :" << q.size() << endl;
+    if(q.empty())
     {
-        cout << q.front() << " "; 
-        q.Pop();
+        cout << "循环队列为空" << endl;
+    } else{
+        cout << "循环队列不为空" << endl;
     }
-    cout << endl;
 
 }
