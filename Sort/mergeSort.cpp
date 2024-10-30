@@ -29,6 +29,7 @@ void merge(std::vector<int> &vec, int low, int high, int mid)
     {
         tmp.push_back(vec[j++]);
     }
+    //将临时数组元素全都放入排序数组的对应位置。
     for(int tmp_i = low;tmp_i <= high;tmp_i++)
     {
         vec[tmp_i] = tmp[tmp_i - low];
@@ -43,10 +44,10 @@ void mergeSort(std::vector<int> &vec, int i, int j)
     }
     // 进行规模缩小
     int mid = (i + j) / 2;
-
+    //只进行递归的递的部分，不进行其它处理。
     mergeSort(vec, i, mid);
     mergeSort(vec, mid + 1, j);
-    // 进行合并
+    //递归完成，开始将结果向上合并。
     merge(vec, i, j, mid);
 }
 
